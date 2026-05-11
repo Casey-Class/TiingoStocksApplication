@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Casey Class</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Stock Search</h2>
+
+    <!-- Forms -->
+    <form>
+        <label for="symbol">Enter Stock Ticker Symbol</label>
+        <input type="text" id="symbol" name="symbol" required>
+        <input type="button" id="search-btn" value="Search">
+        <input type="button" id="clear-btn" value="Clear">
+    </form>
+
+    <!-- Div for error display -->
+    <div id="error"></div>
+
+    <!-- Tabs -->
+    <div id="tabs" class="hidden">
+        <button id="tab-outlook" type="button">Company Outlook</button>
+        <button id="tab-summary" type="button">Stock Summary</button>
+        <button id="tab-history" type="button">Search History</button>
+    </div>
+
+    <!-- Table shells -->
+    <div id="outlook" class="tab-content hidden">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="summary" class="tab-content hidden">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="history" class="tab-content hidden">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
