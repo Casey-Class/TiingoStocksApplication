@@ -99,7 +99,7 @@ def formatJSON(company_json, stock_json):
         "company": {
             "name": company_json.get("name"),
             "ticker": company_json.get("ticker"),
-            "exchange": company_json.get("exchangeCode"),
+            "exchangeCode": company_json.get("exchangeCode"),
             "startDate": company_json.get("startDate"),
             "description": company_json.get("description")
         },
@@ -111,6 +111,7 @@ def formatJSON(company_json, stock_json):
             "high": stock_json.get("high"),
             "low": stock_json.get("low"),
             "last": stock_json.get("last"),
+            "tngoLast": stock_json.get("tngoLast"),
             "volume": stock_json.get("volume")
         }
     }
