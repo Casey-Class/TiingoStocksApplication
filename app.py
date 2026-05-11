@@ -115,3 +115,6 @@ def formatJSON(company_json, stock_json):
             "volume": stock_json.get("volume")
         }
     }
+
+if __name__ == "__main__":
+    app.run(debug=True)
