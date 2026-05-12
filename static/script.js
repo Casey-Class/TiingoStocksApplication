@@ -1,3 +1,5 @@
+document.getElementById("search-btn").addEventListener("click", search);
+
 function switchTabs(event) {
     // find which button was clicked
     const clicked = event.target;
@@ -43,29 +45,31 @@ function showError() {
 
 function search() {
     // backend connection
-    fetch("/search?ticker=${symbol}")
+    const symbol = document.getElementById("symbol").value.trim();
+    if (!symbol) {
+            showError();
+            return;
+    }
+
+    fetch(`/search?ticker=${symbol}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
-                return response.text();
+                showError()
+                throw new Error("Ticker not found");
             }
-        }).then(text => {
-            let data;
-            try {
-                if ("error" in data) {
-                    showError()
-                    return
-                }
+            return response.json()
+        })
+        .then(parsed => {
+            clearContent()
 
-            } catch (e) {
-                // handle invalid JSON format
-                throw new Error('Invalid JSON format.');
-            }
+            generateOutlookTable(parsed);
+            generateSummaryTable(parsed);
+
+            document.getElementById("tabs").classList.remove("hidden");
+            document.getElementById("outlook").classList.remove("hidden");
 
         })
-
-        .catch(error => {
-    });
+        .catch(err => console.error(err));
 }
 
 function generateOutlookTable(parsed) {
@@ -88,7 +92,6 @@ function generateOutlookTable(parsed) {
     addRow("Description", `<span class="description-cell">${parsed.company.description ?? ""}</span>`);
 
 }
-
 
 
 function generateSummaryTable(parsed) {

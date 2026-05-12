@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, render_template
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import requests
@@ -35,6 +35,12 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
 # validate ticker
 # check cache
 # fetch json & format
@@ -43,10 +49,11 @@ def get_db():
 @app.route("/search")
 def searchStocks():
     symbol = request.args.get("ticker")
-    symbol = symbol.upper()
-
     if not symbol or symbol.strip() == "":
         return jsonify({"error": "Invalid ticker"}), 400
+    symbol = symbol.upper()
+
+
 
     conn = get_db()
 
@@ -104,15 +111,15 @@ def formatJSON(company_json, stock_json):
             "description": company_json.get("description")
         },
         "stock": {
-            "ticker": stock_json.get("ticker"),
-            "timestamp": stock_json.get("timestamp"),
-            "prevClose": stock_json.get("prevClose"),
-            "open": stock_json.get("open"),
-            "high": stock_json.get("high"),
-            "low": stock_json.get("low"),
-            "last": stock_json.get("last"),
-            "tngoLast": stock_json.get("tngoLast"),
-            "volume": stock_json.get("volume")
+            "ticker": stock_json[0].get("ticker"),
+            "timestamp": stock_json[0].get("timestamp"),
+            "prevClose": stock_json[0].get("prevClose"),
+            "open": stock_json[0].get("open"),
+            "high": stock_json[0].get("high"),
+            "low": stock_json[0].get("low"),
+            "last": stock_json[0].get("last"),
+            "tngoLast": stock_json[0].get("tngoLast"),
+            "volume": stock_json[0].get("volume")
         }
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Casey Class</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
     <h2>Stock Search</h2>
@@ -17,37 +17,34 @@
     </form>
 
     <!-- Div for error display -->
-    <div id="error"></div>
+    <div id="error" class="hidden"></div>
 
     <!-- Tabs -->
     <div id="tabs" class="hidden">
-        <button id="tab-outlook" type="button">Company Outlook</button>
-        <button id="tab-summary" type="button">Stock Summary</button>
-        <button id="tab-history" type="button">Search History</button>
+        <button id="tab-outlook">Company Outlook</button>
+        <button id="tab-summary">Stock Summary</button>
+        <button id="tab-history">Search History</button>
     </div>
 
     <!-- Table shells -->
     <div id="outlook" class="tab-content hidden">
         <table>
-            <thead></thead>
             <tbody></tbody>
         </table>
     </div>
 
     <div id="summary" class="tab-content hidden">
         <table>
-            <thead></thead>
             <tbody></tbody>
         </table>
     </div>
 
     <div id="history" class="tab-content hidden">
         <table>
-            <thead></thead>
             <tbody></tbody>
         </table>
     </div>
 
-<script src="script.js"></script>
+<script src="../static/script.js"></script>
 </body>
 </html>
