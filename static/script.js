@@ -88,12 +88,14 @@ function generateOutlookTable(parsed) {
     tbody.innerHTML = ""; // clear previous table
 
     const addRow = (label, value) => {
-        tbody.innerHTML += `
-            <tr>
-                <th>${label}</th>
-                <td>${value ?? ""}</td>
-            </tr>
-        `;
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        th.textContent = label;
+        const td = document.createElement("td");
+        td.textContent = value ?? "";
+        tr.appendChild(th);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     };
 
     addRow("Company Name", parsed.company.name);
@@ -110,12 +112,14 @@ function generateSummaryTable(parsed) {
     tbody.innerHTML = ""; // clear previous table
 
     const addRow = (label, value) => {
-        tbody.innerHTML += `
-            <tr>
-                <th>${label}</th>
-                <td>${value ?? ""}</td>
-            </tr>
-        `;
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        th.textContent = label;
+        const td = document.createElement("td");
+        td.textContent = value ?? "";
+        tr.appendChild(th);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     };
 
     addRow("Stock Ticker Symbol", parsed.stock.ticker);
