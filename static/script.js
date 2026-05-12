@@ -1,4 +1,15 @@
 document.getElementById("search-btn").addEventListener("click", search);
+document.getElementById("clear-btn").addEventListener("click", clearContent);
+document.getElementById("clear-btn").addEventListener("click", () => {
+    document.getElementById("symbol").value = "";
+    })
+document.getElementById("tab-outlook").addEventListener("click", switchTabs);
+document.getElementById("tab-summary").addEventListener("click", switchTabs);
+document.getElementById("tab-history").addEventListener("click", switchTabs);
+
+
+
+
 
 function switchTabs(event) {
     // find which button was clicked
@@ -47,7 +58,7 @@ function search() {
     // backend connection
     const symbol = document.getElementById("symbol").value.trim();
     if (!symbol) {
-            showError();
+            alert('Please fill out this field');
             return;
     }
 
