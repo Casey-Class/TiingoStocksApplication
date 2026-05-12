@@ -6,6 +6,7 @@ document.getElementById("clear-btn").addEventListener("click", () => {
 document.getElementById("tab-outlook").addEventListener("click", switchTabs);
 document.getElementById("tab-summary").addEventListener("click", switchTabs);
 document.getElementById("tab-history").addEventListener("click", switchTabs);
+document.getElementById("tab-history").addEventListener("click", getHistory);
 
 
 
@@ -32,8 +33,6 @@ function switchTabs(event) {
 
 function clearContent() {
     // hard code hiding content
-    document.getElementById("tabs").classList.add("hidden");
-    document.querySelectorAll("#tabs button").forEach(btn => btn.classList.add("hidden"));
     document.querySelectorAll(".tab-content").forEach(div => div.classList.add("hidden"));
     document.getElementById("error").classList.add("hidden");
 
@@ -42,11 +41,6 @@ function clearContent() {
 
     // clear tables
     document.querySelectorAll("tbody").forEach(tbody => tbody.innerHTML = "");
-}
-
-function validate(event) {
-    // validate user input
-    alert('Please fill out this field');
 }
 
 function showError() {
@@ -72,13 +66,27 @@ function search() {
         })
         .then(parsed => {
             clearContent()
+            document.getElementById("tabs").classList.remove("hidden");
 
             generateOutlookTable(parsed);
             generateSummaryTable(parsed);
 
-            document.getElementById("tabs").classList.remove("hidden");
             document.getElementById("outlook").classList.remove("hidden");
+        })
+        .catch(err => console.error(err));
+}
 
+function getHistory() {
+    fetch(`/history`)
+        .then(response => {
+            if (!response.ok) {
+                showError()
+                throw new Error("Ticker not found");
+            }
+            return response.json()
+        })
+        .then(historyList => {
+            generateHistoryTable(historyList);
         })
         .catch(err => console.error(err));
 }
@@ -87,12 +95,17 @@ function generateOutlookTable(parsed) {
     const tbody = document.querySelector("#outlook tbody");
     tbody.innerHTML = ""; // clear previous table
 
-    const addRow = (label, value) => {
+    const addRow = (label, value, isHTML = false) => {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         th.textContent = label;
+
         const td = document.createElement("td");
-        td.textContent = value ?? "";
+        if (isHTML) {
+            td.innerHTML = value;
+        } else {
+            td.textContent = value ?? "";
+        }
         tr.appendChild(th);
         tr.appendChild(td);
         tbody.appendChild(tr);
@@ -102,21 +115,25 @@ function generateOutlookTable(parsed) {
     addRow("Ticker", parsed.company.ticker);
     addRow("Exchange", parsed.company.exchangeCode);
     addRow("Start Date", parsed.company.startDate);
-    addRow("Description", `<span class="description-cell">${parsed.company.description ?? ""}</span>`);
+    addRow("Description", `<span class="description-cell">${parsed.company.description ?? ""}</span>`, true);
 
 }
-
 
 function generateSummaryTable(parsed) {
     const tbody = document.querySelector("#summary tbody");
     tbody.innerHTML = ""; // clear previous table
 
-    const addRow = (label, value) => {
+    const addRow = (label, value, isHTML = false) => {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         th.textContent = label;
+
         const td = document.createElement("td");
-        td.textContent = value ?? "";
+        if (isHTML) {
+            td.innerHTML = value;
+        } else {
+            td.textContent = value ?? "";
+        }
         tr.appendChild(th);
         tr.appendChild(td);
         tbody.appendChild(tr);
@@ -139,7 +156,7 @@ function generateSummaryTable(parsed) {
     } else if (change < 0) {
         changeDisplay += " <img src=\"/static/RedArrowDown.png\">";
     }
-    addRow("Change", changeDisplay);
+    addRow("Change", changeDisplay, true);
 
     let changePercent = (change / parsed.stock.prevClose) * 100;
     let changePercentDisplay = changePercent.toFixed(2) + "%";
@@ -148,12 +165,29 @@ function generateSummaryTable(parsed) {
         } else if (change < 0) {
             changePercentDisplay += " <img src=\"/static/RedArrowDown.png\">";
     }
-    addRow("Change Percent", changePercentDisplay);
+    addRow("Change Percent", changePercentDisplay, true);
 
     addRow("Number of Shares Traded", parsed.stock.volume);
 }
 
-function generateHistoryTable() {
+function generateHistoryTable(historyList) {
+    const tbody = document.querySelector("#history tbody");
+    tbody.innerHTML = "";
+
+    historyList.forEach(record => {
+        const tr = document.createElement("tr");
+
+        const tdTicker = document.createElement("td");
+        tdTicker.textContent = record.ticker;
+
+        const tdTime = document.createElement("td");
+        tdTime.textContent = record.timestamp;
+
+        tr.appendChild(tdTicker);
+        tr.appendChild(tdTime);
+
+        tbody.appendChild(tr);
+    });
 }
 
 

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
+    <div class="gray">
     <h2>Stock Search</h2>
 
     <!-- Forms -->
@@ -15,16 +16,19 @@
         <input type="button" id="search-btn" value="Search">
         <input type="button" id="clear-btn" value="Clear">
     </form>
+    </div>
 
-    <!-- Div for error display -->
-    <div id="error" class="hidden"></div>
+    <hr>
 
     <!-- Tabs -->
-    <div id="tabs" class="hidden">
+    <div id="tabs", class="gray">
         <button id="tab-outlook">Company Outlook</button>
         <button id="tab-summary">Stock Summary</button>
         <button id="tab-history">Search History</button>
     </div>
+
+    <!-- Div for error display -->
+    <div id="error" class="hidden"></div>
 
     <!-- Table shells -->
     <div id="outlook" class="tab-content hidden">

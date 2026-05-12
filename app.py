@@ -57,13 +57,15 @@ def searchStocks():
 
     conn = get_db()
 
-    row = conn.execute('''SELECT *
-                          FROM CachedStockData
-                          WHERE ticker = (?)''', (symbol,)).fetchone()
+    with get_db() as conn:
+        row = conn.execute(
+            "SELECT * FROM CachedStockData WHERE ticker = ?",
+            (symbol,)
+        ).fetchone()
+
     if row is not None:
         last_updated = datetime.fromisoformat(row["last_updated"])
         if datetime.utcnow() - last_updated < timedelta(minutes=15):
-            conn.close()
             return jsonify({
                 "company": json.loads(row["company_json"]),
                 "stock": json.loads(row["stock_json"])
@@ -78,26 +80,32 @@ def searchStocks():
     formatted = formatJSON(outlook_raw, summary_raw)
 
     # insert into search history & cache results
-    conn.execute("INSERT INTO SearchHistory (ticker) VALUES (?)", (symbol,))
-    conn.execute("INSERT INTO CachedStockData (ticker, company_json, stock_json, last_updated) VALUES (?, ?, ?, ?)",
-                 (symbol,
-                            json.dumps(formatted["company"]),
-                            json.dumps(formatted["stock"]),
-                            datetime.utcnow().isoformat()))
-    conn.commit()
-    conn.close()
+    with get_db() as conn:
+        conn.execute(
+            "INSERT INTO SearchHistory (ticker) VALUES (?)",
+            (symbol,)
+        )
 
+    with get_db() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO CachedStockData (ticker, company_json, stock_json, last_updated) VALUES (?, ?, ?, ?)",
+            (
+                symbol,
+                json.dumps(formatted["company"]),
+                json.dumps(formatted["stock"]),
+                datetime.utcnow().isoformat()
+            )
+        )
     return jsonify(formatted)
 
 
 @app.route("/history", methods=["GET"])
 def getSearchHistory():
-    conn = get_db()
-    history = conn.execute('''SELECT *
+    with get_db() as conn:
+        history = conn.execute('''SELECT *
                     FROM SearchHistory
                     ORDER BY timestamp DESC
                     LIMIT 10''').fetchall()
-    conn.close()
     return jsonify([dict(record) for record in history])
 
 

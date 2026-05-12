@@ -1,0 +1,99 @@
+/* Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+    background-color: #4e4e94;
+}
+
+.gray {
+    background-color: #eee;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    padding: 6px;
+    width: 200px;
+}
+
+input[type="button"] {
+    padding: 6px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Error message */
+#error {
+    color: red;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Tabs */
+#tabs {
+    margin-top: 20px;
+}
+
+#tabs button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+#tabs button.active {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+/* Tab content */
+.tab-content {
+    margin-top: 20px;
+}
+
+/* Tables */
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 60%;
+    background-color: #eee;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+img {
+    height: 1em;
+    width: auto;
+}
+
+/* Limit description to 5 lines */
+.description-cell {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
